@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  valheim_plus:
+    image: valheim_plus
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    environment:
+      VALHEIM_SERVER_NAME: Test Plus Server
+      VALHEIM_PORT: 2458
+      VALHEIM_WORLD: Plus
+      VALHEIM_PASSWORD: password
+    ports:
+    # game server
+    - 2458:2458/udp
+    # steam check
+    - 2459:2459/udp
+    volumes:
+    # world save path
+    - ./Valheim:/home/steam/.config/unity3d/IronGate/Valheim
+    # plus config
+    - ./valheim_plus.cfg:/home/steam/valheim/BepInEx/config/valheim_plus.cfg
+    # start server shell
+    - ./script/run_bepinex.sh:/home/steam/valheim/run_bepinex.sh
+    command: bash -c './run_bepinex.sh'
+
